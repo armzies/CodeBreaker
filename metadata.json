@@ -1,0 +1,5 @@
+{
+  "name": "CodeBreaker",
+  "description": "A real-time, 2-player turn-based number guessing game.",
+  "requestFramePermissions": []
+}
