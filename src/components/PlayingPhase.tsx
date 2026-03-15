@@ -121,31 +121,27 @@ export function PlayingPhase({ socket, gameId, isMyTurn, turnStartTime, history,
 
           <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 sm:p-8 w-full max-w-sm shadow-2xl relative overflow-hidden">
             {!isMyTurn && (
-              <div className="absolute inset-0 bg-zinc-950/80 backdrop-blur-sm z-10 flex flex-col items-center justify-center">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 border-4 border-zinc-800 border-t-emerald-500 rounded-full animate-spin mb-4"></div>
-                <p className="text-zinc-300 font-medium">Waiting for opponent...</p>
+              <div className="absolute inset-0 bg-zinc-950/95 backdrop-blur-md z-20 flex flex-col items-center justify-center p-6 text-center">
+                {lastGuess && (
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="mb-8 w-full"
+                  >
+                    <p className="text-zinc-400 text-sm font-medium mb-3">Guess Result</p>
+                    <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 flex flex-col items-center justify-center space-y-3 shadow-inner">
+                      <span className="font-mono text-4xl tracking-[0.3em] text-white font-bold ml-2">{lastGuess.guess}</span>
+                      <div className="flex items-center space-x-2 bg-emerald-500/10 px-4 py-2 rounded-xl text-emerald-400">
+                        <span className="font-bold text-2xl">{lastGuess.correctPositions}</span>
+                        <span className="text-sm uppercase font-bold tracking-wider">Correct</span>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+                <div className="w-8 h-8 border-4 border-zinc-800 border-t-emerald-500 rounded-full animate-spin mb-4"></div>
+                <p className="text-zinc-400 font-medium animate-pulse">Waiting for opponent...</p>
               </div>
             )}
-            
-            {/* Last Guess Result */}
-            <AnimatePresence>
-              {lastGuess && (
-                <motion.div 
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mb-6 bg-zinc-950 border border-zinc-800 rounded-xl p-4 flex items-center justify-between"
-                >
-                  <span className="text-zinc-400 text-sm font-medium">Last Guess:</span>
-                  <div className="flex items-center space-x-3">
-                    <span className="font-mono text-lg tracking-widest text-zinc-200">{lastGuess.guess}</span>
-                    <div className="flex items-center space-x-1 bg-emerald-500/10 px-2 py-1 rounded text-emerald-400">
-                      <span className="font-bold">{lastGuess.correctPositions}</span>
-                      <span className="text-[10px] uppercase font-bold tracking-wider">Correct</span>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
 
             <form onSubmit={handleSubmit} className="relative z-0">
               {/* Visual 4-box input */}
