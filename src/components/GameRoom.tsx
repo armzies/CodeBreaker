@@ -4,6 +4,7 @@ import { SetupPhase } from "./SetupPhase";
 import { PlayingPhase } from "./PlayingPhase";
 import { motion } from "motion/react";
 import { Loader2 } from "lucide-react";
+import QRCode from "react-qr-code";
 
 type GameRoomProps = {
   socket: Socket;
@@ -62,6 +63,8 @@ export function GameRoom({ socket, gameId, onLeave }: GameRoomProps) {
   const opponentId = Object.keys(players).find((id) => id !== socket.id);
   const opponent = opponentId ? players[opponentId] : null;
 
+  const joinUrl = `${window.location.origin}?room=${gameId}`;
+
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 font-sans flex flex-col">
       <header className="border-b border-zinc-800 bg-zinc-900/50 p-4 flex justify-between items-center">
@@ -81,15 +84,26 @@ export function GameRoom({ socket, gameId, onLeave }: GameRoomProps) {
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="text-center space-y-6"
+            className="text-center space-y-6 bg-zinc-900 border border-zinc-800 rounded-3xl p-8 max-w-md w-full shadow-2xl"
           >
-            <div className="relative w-24 h-24 mx-auto">
-              <div className="absolute inset-0 border-4 border-zinc-800 rounded-full"></div>
-              <div className="absolute inset-0 border-4 border-emerald-500 rounded-full border-t-transparent animate-spin"></div>
-            </div>
             <div>
               <h2 className="text-2xl font-semibold text-zinc-200 mb-2">Waiting for opponent...</h2>
-              <p className="text-zinc-500">Share the room code <span className="font-mono text-emerald-400">{gameId}</span> with a friend.</p>
+              <p className="text-zinc-500 mb-6">Share the room code or scan the QR code to join.</p>
+            </div>
+            
+            <div className="bg-white p-4 rounded-2xl inline-block mx-auto">
+              <QRCode value={joinUrl} size={200} className="w-48 h-48 sm:w-56 sm:h-56" />
+            </div>
+            
+            <div className="mt-6">
+              <p className="text-sm text-zinc-500 uppercase tracking-widest mb-2">Room Code</p>
+              <div className="font-mono text-4xl tracking-[0.3em] text-emerald-400 font-bold">
+                {gameId}
+              </div>
+            </div>
+            
+            <div className="flex justify-center mt-4">
+              <div className="w-8 h-8 border-2 border-zinc-800 border-t-emerald-500 rounded-full animate-spin"></div>
             </div>
           </motion.div>
         )}
